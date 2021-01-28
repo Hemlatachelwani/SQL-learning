@@ -1,0 +1,70 @@
+We define an employee's total earnings to be their monthly  worked, and the maximum total earnings to be the maximum total earnings for any employee in the Employee table. Write a query to find the maximum total earnings for all employees as well as the total number of employees who have maximum total earnings. Then print these values as  space-separated integers.
+
+Input Format
+
+The Employee table containing employee data for a company is described as follows:
+
+
+
+where employee_id is an employee's ID number, name is their name, months is the total number of months they've been working for the company, and salary is the their monthly salary.
+
+-- SET GLOBAL sql_mode=(SELECT REPLACE(@@sql_mode,'ONLY_FULL_GROUP_BY',''));
+-- select (salary*months) as earnings, count(*) from Employee group by employee_id order by earnings desc limit 1;
+
+
+select (salary * months) as earnings ,count(*) from employee group by 1 order by earnings desc limit 1;
+
+******************************************************************************
+Query the following two values from the STATION table:
+
+The sum of all values in LAT_N rounded to a scale of  decimal places.
+The sum of all values in LONG_W rounded to a scale of  decimal places.
+Input Format
+
+The STATION table is described as follows:
+
+Station.jpg
+
+where LAT_N is the northern latitude and LONG_W is the western longitude.
+
+select round(sum(lat_n),2), round(sum(long_w),2) from STATION group by 1;
+select round(sum(lat_n),2), round(sum(long_w),2) from STATION group by 1;
+42850.04 47381.48
+
+******************************************************************************
+
+
+
+SELECT round(SUM(LAT_N),2) as sl FROM STATION WHERE sl >38.7880 and sl<137.2345;
+
+SELECT ROUND(SUM(LAT_N),4) as sr FROM STATION group by id having sr>38.788 and sr<137.2345; - X
+
+Qn. Query the sum of Northern Latitudes (LAT_N) from STATION having values greater than 38.788 and less than 137.2345 . Truncate your answer to  decimal places.
+SELECT truncate(SUM(LAT_N),4) as sr FROM STATION where lat_n BETWEEN 38.788 and 137.2345;
+
+X - SELECT ROUND(SUM(LAT_N),4) as sr FROM STATION group by ID having sr BETWEEN 38.788 and 137.2345;
+
+******************************************************************************************
+Query the greatest value of the Northern Latitudes (LAT_N) from STATION that is less than . Truncate your answer to  decimal places.
+SELECT truncate(MAX(LAT_N),4) FROM STATION WHERE lat_n < 137.2345;
+
+
+******************************************************************************************
+For error - ERROR 1140 (42000) at line 4: In aggregated query without GROUP BY, expression #2 of SELECT list contains nonaggregated column 'STATION.LONG_W'; this is incompatible with sql_mode=only_full_group_by
+https://stackoverflow.com/questions/41887460/select-list-is-not-in-group-by-clause-and-contains-nonaggregated-column-inc
+
+SET GLOBAL sql_mode=(SELECT REPLACE(@@sql_mode,'ONLY_FULL_GROUP_BY',''));
+
+Learning -
+https://stackoverflow.com/questions/1791834/referencing-mysql-alias-of-aggregate-column
+
+Qn. Query the Western Longitude (LONG_W) for the largest Northern Latitude (LAT_N) in STATION that is less than 137.2345 . Round your answer to  decimal places.
+
+
+select ROUND(long_w,4) from station where lat_n=(SELECT MAX(LAT_N) FROM STATION WHERE LAT_N<137.2345);
+
+Qn. Query the smallest Northern Latitude (LAT_N) from STATION that is greater than . Round your answer to  decimal places.
+SELECT ROUND(lat_n,4) FROM STATION where lat_n=(SELECT MIN(lat_n) from STATION WHERE lat_n>38.778);
+
+Qn. SELECT ROUND(lat_n,4) FROM STATION where lat_n=(SELECT MIN(lat_n) from STATION WHERE lat_n>38.778);
+SELECT round(LONG_W,4) FROM STATION WHERE LAT_N=(select min(lat_n) from STATION WHERE lat_n>38.778);
